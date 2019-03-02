@@ -1,0 +1,17 @@
+{
+  "name": "sleepy-kiwi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:lambda": "netlify-lambda serve src/lambda",
+    "build:lambda": "netlify-lambda build src/lambda"
+  },
+  "author": "Frank Congson",
+  "license": "MIT",
+  "dependencies": {
+    "ask-sdk": "^2.4.0",
+    "netlify-lambda": "^1.4.2"
+  }
+}
