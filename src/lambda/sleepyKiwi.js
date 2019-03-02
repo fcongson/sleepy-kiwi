@@ -3,6 +3,11 @@
 
 const Alexa = require("ask-sdk");
 const https = require("https");
+const Sentry = require('@sentry/node');
+
+require('dotenv').config({ path: './variables.env' });
+
+Sentry.init({ dsn: process.env.SENTRY_DSN });
 
 
 
