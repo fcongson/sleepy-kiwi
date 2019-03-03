@@ -1,9 +1,9 @@
 import * as Alexa from 'ask-sdk-core'
-import * as Sentry from '@sentry/node'
+import * as Raven from 'raven'
 
 require('dotenv').config({ path: './variables.env' })
 
-Sentry.init({ dsn: process.env.SENTRY_DSN })
+Raven.config(process.env.SENTRY_DSN).install()
 
 const invocationName = 'sleepy kiwi'
 
@@ -279,7 +279,6 @@ const NoIntentHandler = {
     return request.type === 'IntentRequest' && request.intent.name === 'AMAZON.NoIntent'
   },
   handle(handlerInput) {
-    // const request = JSON.parse(handlerInput.requestEnvelope.body).request;
     const { responseBuilder } = handlerInput
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
 
@@ -304,11 +303,8 @@ const LaunchRequestHandler = {
   },
   handle(handlerInput) {
     const { responseBuilder } = handlerInput
-
     const say = `hello and welcome to ${invocationName}! Say help to hear some options.`
-
     const skillTitle = capitalize(invocationName)
-
 
     return responseBuilder
       .speak(say)
@@ -338,10 +334,13 @@ const ErrorHandler = {
   handle(handlerInput, error) {
     console.log(`Error handled: ${error.message}`)
 
-    return handlerInput.responseBuilder
-      .speak('Sorry, I can\'t understand the command. Please say again.')
-      .reprompt('Sorry, I can\'t understand the command. Please say again.')
-      .getResponse()
+    return new Promise(resolve => Raven.captureException(
+      error,
+      () => resolve(handlerInput.responseBuilder
+        .speak('Sorry, I can\'t understand the command. Please say again.')
+        .reprompt('Sorry, I can\'t understand the command. Please say again.')
+        .getResponse()),
+    ))
   },
 }
 

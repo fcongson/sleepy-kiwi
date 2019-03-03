@@ -15,6 +15,7 @@
     "ask-sdk": "^2.4.0",
     "ask-sdk-core": "^2.4.0",
     "dotenv": "^6.2.0",
-    "netlify-lambda": "^1.4.2"
+    "netlify-lambda": "^1.4.2",
+    "raven": "^2.6.4"
   }
 }
